@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="0.0000" tests="5" failures="0">
+  <testsuite name="Root Suite" timestamp="2020-03-15T13:08:39" tests="0" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Delivery Service Test" timestamp="2020-03-15T13:08:39" tests="0" file="/Users/mustafaunal/Desktop/ShoppingCart/test/delivery.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Calculate Delivery Cost" timestamp="2020-03-15T13:08:39" tests="5" file="/Users/mustafaunal/Desktop/ShoppingCart/test/delivery.js" time="0.0000" failures="0">
+    <testcase name="Delivery Service Test Calculate Delivery Cost Should return exception if cart is undefined" time="0.0000" classname="Should return exception if cart is undefined">
+    </testcase>
+    <testcase name="Delivery Service Test Calculate Delivery Cost Should return 0 if cart is empty" time="0.0000" classname="Should return 0 if cart is empty">
+    </testcase>
+    <testcase name="Delivery Service Test Calculate Delivery Cost Should return 10.99 if cart has 4 different products from 2 different categories" time="0.0000" classname="Should return 10.99 if cart has 4 different products from 2 different categories">
+    </testcase>
+    <testcase name="Delivery Service Test Calculate Delivery Cost Should return 7.99 if cart has 3 different products from same single category" time="0.0000" classname="Should return 7.99 if cart has 3 different products from same single category">
+    </testcase>
+    <testcase name="Delivery Service Test Calculate Delivery Cost Should return 5.99 if cart has single product" time="0.0000" classname="Should return 5.99 if cart has single product">
+    </testcase>
+  </testsuite>
+</testsuites>

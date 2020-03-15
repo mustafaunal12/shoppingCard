@@ -1,0 +1,32 @@
+[
+    {
+        "category": "Food",
+        "discount": 20.0,
+        "minItemCount": 3,
+        "discountType": 1
+    },
+    {
+        "category": "Food",
+        "discount": 50.0,
+        "minItemCount": 5,
+        "discountType": 1
+    },
+    {
+        "category": "Food",
+        "discount": 5.0,
+        "minItemCount": 5,
+        "discountType": 2
+    },
+    {
+        "category": "Fruit",
+        "discount": 20.0,
+        "minItemCount": 3,
+        "discountType": 1
+    },
+    {
+        "category": "Apple",
+        "discount": 20.0,
+        "minItemCount": 3,
+        "discountType": 1
+    }
+]
