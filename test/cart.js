@@ -136,6 +136,25 @@ describe('Cart Service Tests', function () {
 				assert.strictEqual(err.name, 'ArgumentRequiredError');
 			}
 		});
+		it('Should return 0 if cart is empty', () => {
+			const discount = cartService({ campaignsData, categoriesData }).getCampaignDiscount([]);
+
+			assert.strictEqual(discount, 0);
+		});
+		it('Should return 0 if there is any campaign', () => {
+			const campaignsData = [];
+			const dell = new Product('Dell', 'Computer', 50);
+			const macbook = new Product('MacBook', 'Computer', 50);
+
+			const cart = [
+				new CartItem(dell, 2),
+				new CartItem(macbook, 2)
+			];
+
+			const discount = cartService({ campaignsData, categoriesData }).getCampaignDiscount(cart);
+
+			assert.strictEqual(discount, 0);
+		});
 		it('Should return 0 for 5 product from Computer category with 200 total price', () => {
 			const dell = new Product('Dell', 'Computer', 50);
 			const macbook = new Product('MacBook', 'Computer', 50);
@@ -341,7 +360,7 @@ describe('Cart Service Tests', function () {
 			assert.strictEqual(cost, 10.99);
 		});
 	});
-	describe.only('print Tests', function () {
+	describe('print Tests', function () {
 		const campaignsData = [
 			new Campaign('Shoes', 30, 2, DiscountType.Amount),
 			new Campaign('Food', 50, 5, DiscountType.Rate),
@@ -375,6 +394,11 @@ describe('Cart Service Tests', function () {
 			} catch (err) {
 				assert.strictEqual(err.name, 'ArgumentRequiredError');
 			}
+		});
+		it('Should return false if cart is empty', () => {
+			const data = print([]);
+
+			assert.ok(!data);
 		});
 		it('Should return 2 categories, 75 initial cart amount, 10.99 delivery cost, 0 total discount, 210.99 total cart amount', () => {
 			const greenApple = new Product('Green Apple', 'Fruit', 25);

@@ -21,6 +21,12 @@ describe('Coupon Service Tests', function () {
 				assert.strictEqual(err.name, 'ArgumentRequiredError');
 			}
 		});
+		it('Should return 0 if there is no coupon', () => {
+			const couponFinder = couponService.findMaxDiscount(null);
+			const discount = couponFinder(50);
+
+			assert.strictEqual(discount, 0);
+		});
 		it('Should return 0 if there is no matched coupon with total cart amount', () => {
 			const coupons = [
 				new Coupon(100, 10, DiscountType.Rate),
@@ -33,9 +39,8 @@ describe('Coupon Service Tests', function () {
 			assert.strictEqual(discount, 0);
 		});
 		it('Should return 10 for single coupon for %10 discount with 100 cart amount', () => {
-			const coupons = [
-				new Coupon(100, 10, DiscountType.Rate)
-			];
+			const coupons = new Coupon(100, 10, DiscountType.Rate);
+
 			const couponFinder = couponService.findMaxDiscount(coupons);
 			const discount = couponFinder(100);
 

@@ -22,10 +22,6 @@ const findMaxDiscount = coupons =>
 			return 0;
 		}
 
-		if (!Array.isArray(coupon)) {
-			return getDiscount[coupon.discountType](coupon.discount, cartAmount);
-		}
-
 		const maxDiscount = coupon.map(c => {
 			return getDiscount[c.discountType](c.discount, cartAmount);
 		}).reduce((prev, curr) => Math.max(prev, curr));

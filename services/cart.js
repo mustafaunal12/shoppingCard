@@ -6,7 +6,7 @@ const deliveryService = require('./delivery');
 
 const groupByCategory = cart => {
 	if (!cart.length) {
-		return {};
+		return false;
 	}
 
 	const groups = cart.reduce((group, item) => {
@@ -120,25 +120,19 @@ const getCampaignDiscount = (campaignsData, categoriesData) =>
 
 		const { totalQuantity, categories } = groupByCategory(cart);
 
-		if (totalQuantity === 0) {
+		if (!totalQuantity) {
 			return 0;
 		}
 
 		const campaignDiscountCalculator = applyCampaingDiscount(campaignsData, categoriesData);
 
-		const discounts = Object.entries(categories)
+		const campaignDiscount = Object.entries(categories)
 			.map(c => {
 				const category = c[0];
 				const { quantity, amount } = c[1];
 
 				return campaignDiscountCalculator(category, quantity, amount);
-			});
-
-		if (!discounts || !discounts.length) {
-			return 0;
-		}
-
-		const campaignDiscount = discounts.reduce((prev, curr) => prev + curr);
+			}).reduce((prev, curr) => prev + curr);
 
 		return campaignDiscount;
 	};
@@ -184,13 +178,16 @@ const print = (campaignsData, categoriesData, couponsData, costPerDelivery, cost
 	 */
 	function (cart) {
 		required('cart')(cart);
-		
+
 		const groups = groupByCategory(cart);
+		if(!groups) {
+			return false;
+		}
 
 		const categories = Object.entries(groups.categories).map(([category, group]) => ({
 			category: category,
 			products: group.products.map(p => ({
-				name: p.product.name,
+				name: p.product.title,
 				quantity: p.quantity,
 				unitPrice: p.product.price,
 				totalPrice: p.quantity * p.product.price

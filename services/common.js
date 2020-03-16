@@ -14,8 +14,6 @@ const required = (...argumentName) => (...argumentArray) => {
 	});
 };
 
-const generateObjectId = () => (Math.random() * 16 | 0).toString(16);
-
 const getRateDiscount = (discount, amount) => (amount / 100) * discount;
 const getAmountDiscount = discount => discount;
 
@@ -27,6 +25,5 @@ const getDiscount = {
 module.exports = {
 	convertToArray,
 	required,
-	getDiscount,
-	generateObjectId
+	getDiscount
 };

@@ -95,7 +95,16 @@ describe('Campaign Service Tests', function () {
 				assert.strictEqual(err.name, 'ArgumentRequiredError');
 			}
 		});
-		it('Should return 100 for 5 product with 200 total price', () => {
+		it('Should return 75 for 5 products with 150 total price', () => {
+			const campaigns = new Campaign('Food', 50, 5, DiscountType.Rate);
+
+			const maxDiscountFinder = campaignService.findMaxDiscount(campaigns);
+			const discount = maxDiscountFinder(150);
+
+			assert.ok(discount);
+			assert.strictEqual(discount, 75);
+		});
+		it('Should return 100 for 5 products with 200 total price', () => {
 			const campaigns = [
 				new Campaign('Food', 50, 5, DiscountType.Rate),
 				new Campaign('Food', 20, 3, DiscountType.Rate),
@@ -108,7 +117,7 @@ describe('Campaign Service Tests', function () {
 			assert.ok(discount);
 			assert.strictEqual(discount, 100);
 		});
-		it('Should return 40 for 4 product with 200 total price', () => {
+		it('Should return 40 for 4 products with 200 total price', () => {
 			const campaigns = [
 				new Campaign('Food', 20, 3, DiscountType.Rate),
 				new Campaign('Food', 5, 5, DiscountType.Amount)
@@ -120,7 +129,7 @@ describe('Campaign Service Tests', function () {
 			assert.ok(discount);
 			assert.strictEqual(discount, 40);
 		});
-		it('Should return 5 for 5 product with 9 total price', () => {
+		it('Should return 5 for 5 products with 9 total price', () => {
 			const campaigns = [
 				new Campaign('Food', 20, 3, DiscountType.Rate),
 				new Campaign('Food', 5, 5, DiscountType.Amount)
