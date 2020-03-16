@@ -1,14 +1,14 @@
 const { required, convertToArray, getDiscount } = require('./common');
 
 /**
- * Returns FindApplicableCouponFunction
+ * Returns FindMaxDiscountFunction
  * @param {[Coupon]} coupons - Coupons data
- * @returns {FindApplicableCouponFunction} - FindApplicableCoupon Function
+ * @returns {FindMaxDiscountFunction} - FindMaxDiscount Function
  */
-const findApplicableCoupon = coupons =>
+const findMaxDiscount = coupons =>
 	/**
 	 * Finds applicable coupon by total cart amount
-	 * @callback FindApplicableCouponFunction
+	 * @callback FindMaxDiscountFunction
 	 * @param {number} cartAmount - Total cart amount
 	 * @returns {number} - Returns total discount
 	 */
@@ -17,8 +17,8 @@ const findApplicableCoupon = coupons =>
 
 		const couponsData = convertToArray(coupons);
 
-		const coupon = couponsData.find(c => c.minAmount >= cartAmount);
-		if (!coupon) {
+		const coupon = couponsData.filter(c => cartAmount >= c.minAmount);
+		if (!coupon.length) {
 			return 0;
 		}
 
@@ -34,5 +34,5 @@ const findApplicableCoupon = coupons =>
 	};
 
 module.exports = {
-	findApplicableCoupon
+	findMaxDiscount
 };

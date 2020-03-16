@@ -10,20 +10,24 @@ const findApplicableCampaigns = (campaignsData, categoriesData) =>
 	/**
 	 * Returns campaigns for category
 	 * @callback FindApplicableCampaignsFunction
-	 * @param {Category} category - Category
+	 * @param {string} category - Category
 	 * @param {number} quantity - Item quantity
 	 * @returns {[Campaign]} - Returns all campaigns for given category and product quantity
 	 */
 	function (category, quantity) {
-		required('name', 'quantity')(category.name, quantity);
+		required('category', 'quantity')(category, quantity);
+
+		const categoryObj = categoriesData.find(c => c.name === category);
+		if(!categoryObj) {
+			return [];
+		}
 
 		const campaigns = convertToArray(campaignsData);
 
-		const applicableCampaigns = campaigns.filter(c => c.category === category.name && c.minItemCount <= quantity);
+		const applicableCampaigns = campaigns.filter(c => c.category === category && c.minItemCount <= quantity);
 
-		if (category.parent) {
-			const parent = categoriesData.find(c => c.name === category.parent);
-			const parentCampaigns = findApplicableCampaigns(campaigns, categoriesData)(parent, quantity);
+		if (categoryObj.parent) {
+			const parentCampaigns = findApplicableCampaigns(campaigns, categoriesData)(categoryObj.parent, quantity);
 			return applicableCampaigns.concat(parentCampaigns);
 		}
 

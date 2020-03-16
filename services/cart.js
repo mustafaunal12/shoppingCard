@@ -33,6 +33,10 @@ const applyCampaingDiscount = (campaignsData, categoriesData) =>
 		const applicableCampaignsFinder = campaignService.findApplicableCampaigns(campaignsData, categoriesData);
 		const applicableCampaigns = applicableCampaignsFinder(category, categoryItemCount);
 
+		if (!applicableCampaigns || !applicableCampaigns.length) {
+			return 0;
+		}
+
 		const maxCampaingDiscountFinder = campaignService.findMaxDiscount(applicableCampaigns);
 		const maxDiscount = maxCampaingDiscountFinder(categoryTotalAmount);
 
@@ -41,7 +45,7 @@ const applyCampaingDiscount = (campaignsData, categoriesData) =>
 
 const applyCouponDiscount = (couponsData) =>
 	function (cartAmount) {
-		const applicableCouponFinder = couponService.findApplicableCoupon(couponsData);
+		const applicableCouponFinder = couponService.findMaxDiscount(couponsData);
 		return applicableCouponFinder(cartAmount);
 	};
 
@@ -68,7 +72,7 @@ const getTotalAmountAfterDiscounts = (campaignsData, categoriesData, couponsData
 
 		const cartAmountAfterCampaignDiscount = campaignDiscount ? totalAmount - campaignDiscount : totalAmount;
 
-		const couponDiscount = getCouponDiscount(couponsData)(cartAmountAfterCampaignDiscount);
+		const couponDiscount = applyCouponDiscount(couponsData)(cartAmountAfterCampaignDiscount);
 
 		return couponDiscount ? cartAmountAfterCampaignDiscount - couponDiscount : cartAmountAfterCampaignDiscount;
 	};
@@ -88,14 +92,14 @@ const getCouponDiscount = couponsData =>
 	function (cart) {
 		required('cart')(cart);
 
-		const { totalAmount, totalQuantity } = groupByCategory(cart);
+		const { totalPrice, totalQuantity } = groupByCategory(cart);
 
-		if (totalQuantity === 0 || !totalAmount) {
+		if (totalQuantity === 0 || !totalPrice) {
 			return 0;
 		}
 
 		const couponDiscountCalculator = applyCouponDiscount(couponsData);
-		return couponDiscountCalculator(totalAmount);
+		return couponDiscountCalculator(totalPrice);
 	};
 
 /**
@@ -116,16 +120,25 @@ const getCampaignDiscount = (campaignsData, categoriesData) =>
 
 		const { totalQuantity, categories } = groupByCategory(cart);
 
-		if (totalQuantity === 0 || !categories.length) {
+		if (totalQuantity === 0) {
 			return 0;
 		}
 
 		const campaignDiscountCalculator = applyCampaingDiscount(campaignsData, categoriesData);
 
-		const campaignDiscount = categories.reduce((discount, category) => {
-			discount = (discount || 0) + campaignDiscountCalculator(category.key, category.quantity, category.amount);
-			return discount;
-		});
+		const discounts = Object.entries(categories)
+			.map(c => {
+				const category = c[0];
+				const { quantity, amount } = c[1];
+
+				return campaignDiscountCalculator(category, quantity, amount);
+			});
+
+		if (!discounts || !discounts.length) {
+			return 0;
+		}
+
+		const campaignDiscount = discounts.reduce((prev, curr) => prev + curr);
 
 		return campaignDiscount;
 	};
@@ -195,10 +208,10 @@ const print = (campaignsData, categoriesData, couponsData, costPerDelivery, cost
 		};
 	};
 
-module.exports = {
-	getTotalAmountAfterDiscounts,
-	getCouponDiscount,
-	getCampaignDiscount,
-	getDeliveryCost,
-	print
-};
+module.exports = ({ campaignsData, categoriesData, couponsData, costPerDelivery, costPerProduct, fixedCost }) => ({
+	getTotalAmountAfterDiscounts: getTotalAmountAfterDiscounts(campaignsData, categoriesData, couponsData),
+	getCouponDiscount: getCouponDiscount(couponsData),
+	getCampaignDiscount: getCampaignDiscount(campaignsData, categoriesData),
+	getDeliveryCost: getDeliveryCost(costPerDelivery, costPerProduct, fixedCost),
+	print: print(campaignsData, categoriesData, couponsData, costPerDelivery, costPerProduct, fixedCost)
+});
