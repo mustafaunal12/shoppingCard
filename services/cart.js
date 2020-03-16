@@ -68,9 +68,9 @@ const getTotalAmountAfterDiscounts = (campaignsData, categoriesData, couponsData
 
 		const campaignDiscount = getCampaignDiscount(campaignsData, categoriesData)(cart);
 
-		const { totalAmount } = groupByCategory(cart);
+		const { totalPrice } = groupByCategory(cart);
 
-		const cartAmountAfterCampaignDiscount = campaignDiscount ? totalAmount - campaignDiscount : totalAmount;
+		const cartAmountAfterCampaignDiscount = campaignDiscount ? totalPrice - campaignDiscount : totalPrice;
 
 		const couponDiscount = applyCouponDiscount(couponsData)(cartAmountAfterCampaignDiscount);
 
@@ -160,8 +160,8 @@ const getDeliveryCost = (costPerDelivery, costPerProduct, fixedCost) =>
 	function (cart) {
 		required('cart')(cart);
 
-		const delivaryCalculator = deliveryService.calculateDeliveryCost(cart);
-		return delivaryCalculator(costPerDelivery, costPerProduct, fixedCost);
+		const delivaryCalculator = deliveryService.calculateDeliveryCost(costPerDelivery, costPerProduct, fixedCost);
+		return delivaryCalculator(cart);
 	};
 
 /**
@@ -183,6 +183,8 @@ const print = (campaignsData, categoriesData, couponsData, costPerDelivery, cost
 	 *  total price after discount,total discount, delivery cost
 	 */
 	function (cart) {
+		required('cart')(cart);
+		
 		const groups = groupByCategory(cart);
 
 		const categories = Object.entries(groups.categories).map(([category, group]) => ({
