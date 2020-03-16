@@ -97,3 +97,5 @@ typings/
 **/tools/template/__pycache__/
 
 .DS_Store
+
+testResults/

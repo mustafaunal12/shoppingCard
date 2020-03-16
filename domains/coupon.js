@@ -6,11 +6,11 @@
  * @returns {Coupon} - Coupon object
  */
 function Coupon(minAmount, discount, discountType) {
-    return {
-        minAmount,
-        discount,
-        discountType
-    };
-};
+	return {
+		minAmount,
+		discount,
+		discountType
+	};
+}
 
 module.exports = Coupon;

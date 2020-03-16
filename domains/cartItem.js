@@ -5,10 +5,10 @@
  * @returns {CartItem} - CartItem object
  */
 function CartItem(product, quantity) {
-    return {
-        product,
-        quantity
-    };
-};
+	return {
+		product,
+		quantity
+	};
+}
 
 module.exports = CartItem;

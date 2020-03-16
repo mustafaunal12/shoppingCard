@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Apple",
+        "parent": "Fruit"
+    },
+    {
+        "name": "Fruit",
+        "parent": "Food"
+    },
+    {
+        "name": "Food",
+        "parent": ""
+    },
+    {
+        "name": "Shoes",
+        "parent": ""
+    },
+    {
+        "name": "Adidas",
+        "parent": "Shoes"
+    }
+]

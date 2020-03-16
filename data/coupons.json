@@ -1,0 +1,17 @@
+[
+    {
+        "minAmount": 100.0,
+        "discount": 10,
+        "discountType": 1
+    },
+    {
+        "minAmount": 150.0,
+        "discount": 10,
+        "discountType": 2
+    },
+    {
+        "minAmount": 50.0,
+        "discount": 5,
+        "discountType": 1
+    }
+]

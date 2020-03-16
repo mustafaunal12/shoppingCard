@@ -5,10 +5,10 @@
  * @returns {Category} - Category object
  */
 function Category(name, parent) {
-    return {
-        name,
-        parent
-    };
-};
+	return {
+		name,
+		parent
+	};
+}
 
 module.exports = Category;

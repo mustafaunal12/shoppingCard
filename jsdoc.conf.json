@@ -1,0 +1,17 @@
+{
+	"source": {
+		"include": [
+			"."
+		],
+		"exclude": [
+			"*/node_modules/"
+		]
+	},
+	"templates": {
+		"cleverLinks": true,
+		"monospaceLinks": true,
+		"default": {
+			"outputSourceFiles": true
+		}
+	}
+}

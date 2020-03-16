@@ -1,8 +1,5 @@
 const { required, convertToArray, getDiscount } = require('./common');
 
-const Campaign = require('../domains/campaign');
-const Category = require('../domains/category');
-
 /**
  * Returns FindApplicableCampaignsFunction
  * @param {[Campaign]} campaignsData - All active campaigns
@@ -10,28 +7,28 @@ const Category = require('../domains/category');
  * @returns {FindApplicableCampaignsFunction} - FindApplicableCampaignsFunction Function
  */
 const findApplicableCampaigns = (campaignsData, categoriesData) =>
-    /**
-     * Returns campaigns for category
-     * @callback FindApplicableCampaignsFunction
-     * @param {Category} category - Category
-     * @param {number} quantity - Item quantity
-     * @returns {[Campaign]} - Returns all campaigns for given category and product quantity
-     */
-    function (category, quantity) {
-        required('name', 'quantity')(category.name, quantity);
+	/**
+	 * Returns campaigns for category
+	 * @callback FindApplicableCampaignsFunction
+	 * @param {Category} category - Category
+	 * @param {number} quantity - Item quantity
+	 * @returns {[Campaign]} - Returns all campaigns for given category and product quantity
+	 */
+	function (category, quantity) {
+		required('name', 'quantity')(category.name, quantity);
 
-        const campaigns = convertToArray(campaignsData);
+		const campaigns = convertToArray(campaignsData);
 
-        const applicableCampaigns = campaigns.filter(c => c.category === category.name && c.minItemCount <= quantity);
+		const applicableCampaigns = campaigns.filter(c => c.category === category.name && c.minItemCount <= quantity);
 
-        if (category.parent) {
-            const parent = categoriesData.find(c => c.name === category.parent);
-            const parentCampaigns = findApplicableCampaigns(campaigns, categoriesData)(parent, quantity)
-            return applicableCampaigns.concat(parentCampaigns);
-        }
+		if (category.parent) {
+			const parent = categoriesData.find(c => c.name === category.parent);
+			const parentCampaigns = findApplicableCampaigns(campaigns, categoriesData)(parent, quantity);
+			return applicableCampaigns.concat(parentCampaigns);
+		}
 
-        return applicableCampaigns;
-    };
+		return applicableCampaigns;
+	};
 
 /**
  * Returns FindMaximumDiscountFunction
@@ -39,27 +36,27 @@ const findApplicableCampaigns = (campaignsData, categoriesData) =>
  * @returns {FindMaximumDiscountFunction} - FindMaximumDiscount Function
  */
 const findMaxDiscount = campaigns =>
-    /**
-     * Finds maximum discount from campaign list
-     * @callback FindMaximumDiscountFunction
-     * @param {number} categoryAmount - Total category amount in cart
-     * @returns {number} - Returns discount amount
-     */
-    function (categoryAmount) {
-        required('categoryAmount')(categoryAmount);
+	/**
+	 * Finds maximum discount from campaign list
+	 * @callback FindMaximumDiscountFunction
+	 * @param {number} categoryAmount - Total category amount in cart
+	 * @returns {number} - Returns discount amount
+	 */
+	function (categoryAmount) {
+		required('categoryAmount')(categoryAmount);
 
-        if (!Array.isArray(campaigns)) {
-            return getDiscount[campaign.discountType](campaigns.discount, categoryAmount);
-        }
+		if (!Array.isArray(campaigns)) {
+			return getDiscount[campaigns.discountType](campaigns.discount, categoryAmount);
+		}
 
-        const maxDiscount = campaigns.map(campaign => {
-            return getDiscount[campaign.discountType](campaign.discount, categoryAmount);
-        }).reduce((prev, curr) => Math.max(prev, curr));
+		const maxDiscount = campaigns.map(campaign => {
+			return getDiscount[campaign.discountType](campaign.discount, categoryAmount);
+		}).reduce((prev, curr) => Math.max(prev, curr));
 
-        return maxDiscount;
-    };
+		return maxDiscount;
+	};
 
 module.exports = {
-    findApplicableCampaigns,
-    findMaxDiscount
+	findApplicableCampaigns,
+	findMaxDiscount
 };

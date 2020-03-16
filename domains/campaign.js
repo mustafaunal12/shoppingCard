@@ -7,12 +7,12 @@
  * @returns {Campaign} - Campaign object
  */
 function Campaign(category, discount, minItemCount, discountType) {
-    return {
-        category,
-        discount,
-        minItemCount,
-        discountType
-    };
-};
+	return {
+		category,
+		discount,
+		minItemCount,
+		discountType
+	};
+}
 
 module.exports = Campaign;
