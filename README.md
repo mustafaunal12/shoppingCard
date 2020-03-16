@@ -1,14 +1,15 @@
 # shoppingCard
 
-# npm install
+npm install
 
-# npm run test       # writes test results to testResults/test-result.xml in root directory 
+npm run test       # writes test results to testResults/test-result.xml in root directory 
 
-# npm run coverage   # writes test coverage results to terminal
+npm run coverage   # writes test coverage results to terminal
 
-# npm start          # runs print function with dummy data and writes results to terminal
+npm start          # runs print function with dummy data and writes results to terminal
 
-# launch.json for visual studio code
+launch.json for visual studio code
+
 {
     "version": "0.2.0",
     "configurations": [
